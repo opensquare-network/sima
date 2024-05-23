@@ -2,9 +2,10 @@ const {
   utils: { isExtrinsicSuccess, extractExtrinsicEvents },
   extrinsic: { handlePureNestedCalls },
 } = require("@osn/scan-common");
+const { handleRemark } = require("./remark");
 
 async function handleCalls(call, author, extrinsicIndexer) {
-
+  await handleRemark(call, author, extrinsicIndexer);
 }
 
 async function handleExtrinsics(extrinsics = [], allEvents = [], indexer) {
