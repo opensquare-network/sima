@@ -1,0 +1,9 @@
+{
+  "name": "@sima/mongo",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "dependencies": {
+    "@osn/scan-common": "0.6.9",
+    "mongodb": "6.1.0"
+  }
+}
