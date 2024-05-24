@@ -5,6 +5,7 @@ const {
 
 let db = null;
 let avatarCol = null;
+let avatarUnsetRecordCol = null;
 let ipfsJobCol = null;
 
 async function initSimaScanDb() {
@@ -15,6 +16,7 @@ async function initSimaScanDb() {
   await db.init();
 
   avatarCol = await db.createCol("avatar");
+  avatarUnsetRecordCol = await db.createCol("avatarUnsetRecord");
   _createIndexes().then(() => console.log("DB indexes created!"));
 }
 
@@ -24,6 +26,9 @@ async function _createIndexes() {
     process.exit(1);
   }
 
+  await avatarCol.createIndex({ signer: 1 }, { unique: true });
+  await avatarUnsetRecordCol.createIndex({ signer: 1 });
+  await avatarUnsetRecordCol.createIndex({ signer: 1, "indexer.blockHeight": -1 });
   // todo: add indexes
 }
 
@@ -41,13 +46,25 @@ async function getSimaDb() {
   return db;
 }
 
+async function getAvatarCol() {
+  await makeSureInit(avatarCol);
+  return avatarCol;
+}
+
 async function getIpfsJobCol() {
   await makeSureInit(ipfsJobCol);
   return ipfsJobCol;
 }
 
+async function getAvatarUnsetRecordCol() {
+  await makeSureInit(avatarUnsetRecordCol);
+  return avatarUnsetRecordCol;
+}
+
 module.exports = {
   initSimaScanDb,
   getSimaDb,
+  getAvatarCol,
   getIpfsJobCol,
+  getAvatarUnsetRecordCol,
 }
