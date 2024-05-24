@@ -1,5 +1,6 @@
 const { SimaSpecParser, specSections } = require("../../../spec");
 const { setKnownHeightMark } = require("../../store");
+const { handleAvatarCommand } = require("./avatar");
 
 async function handleRemark(call, signer, extrinsicIndexer) {
   const { section, method } = call;
@@ -14,7 +15,7 @@ async function handleRemark(call, signer, extrinsicIndexer) {
   }
 
   if (specSections.avatar === parser.section) {
-    // todo: handle spec avatar business
+    await handleAvatarCommand(signer, parser.command, parser.args, extrinsicIndexer);
   } else if (specSections.delegation === parser.section) {
     // todo: handle spec delegation business
   }

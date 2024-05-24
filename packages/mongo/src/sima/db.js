@@ -5,6 +5,7 @@ const {
 
 let db = null;
 let avatarCol = null;
+let ipfsJobCol = null;
 
 async function initSimaScanDb() {
   db = new ScanDb(
@@ -40,7 +41,13 @@ async function getSimaDb() {
   return db;
 }
 
+async function getIpfsJobCol() {
+  await makeSureInit(ipfsJobCol);
+  return ipfsJobCol;
+}
+
 module.exports = {
   initSimaScanDb,
   getSimaDb,
+  getIpfsJobCol,
 }

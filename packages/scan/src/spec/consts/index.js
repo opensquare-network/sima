@@ -1,3 +1,4 @@
+const commands = require("./commands");
 const specSections = {
   "avatar": "A",
   "delegation": "D",
@@ -10,7 +11,13 @@ const avatarVersions = [1];
 const avatarCommands = [
   {
     version: 1,
-    commands: ["S", "AS", "U", "AU", "BAS"],
+    commands: [
+      commands.submission,
+      commands.agencySubmission,
+      commands.unset,
+      commands.agencyUnset,
+      commands.batchAgencySubmission,
+    ],
   },
 ];
 
@@ -18,7 +25,13 @@ const delegationVersions = [1];
 const delegationCommands = [
   {
     version: 1,
-    commands: ["S", "AS", "U", "AU", "BAS"],
+    commands: [
+      commands.submission,
+      commands.agencySubmission,
+      commands.unset,
+      commands.agencyUnset,
+      commands.batchAgencySubmission,
+    ],
   },
 ];
 
@@ -29,4 +42,5 @@ module.exports = {
   delegationVersions,
   avatarCommands,
   delegationCommands,
+  commands,
 }
