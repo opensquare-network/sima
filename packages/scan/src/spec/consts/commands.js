@@ -6,4 +6,6 @@ const commands = Object.freeze({
   batchAgencySubmission: "BAS",
 });
 
-module.exports = commands;
+module.exports = {
+  commands,
+};

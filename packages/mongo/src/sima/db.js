@@ -26,7 +26,10 @@ async function _createIndexes() {
     process.exit(1);
   }
 
-  await avatarCol.createIndex({ signer: 1 }, { unique: true });
+  await ipfsJobCol.createIndex({ closed: 1 });
+  await ipfsJobCol.createIndex({ section: 1, command: 1 });
+
+  await avatarCol.createIndex({ address: 1 }, { unique: true });
   await avatarUnsetRecordCol.createIndex({ signer: 1 });
   await avatarUnsetRecordCol.createIndex({ signer: 1, "indexer.blockHeight": -1 });
   // todo: add indexes

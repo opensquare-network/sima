@@ -3,16 +3,17 @@ const { sima: { getIpfsJobCol } } = require("@sima/mongo");
 const { specSections, commands } = require("../../../../spec/consts");
 
 async function insertIpfsJob(signer, command, args, indexer) {
-  const maybeImgCid = args[0];
-  if (!await isCid(maybeImgCid)) {
+  const maybeCid = args[0];
+  if (!await isCid(maybeCid)) {
     return
   }
 
   const col = await getIpfsJobCol();
   await col.insertOne({
-    jobType: `${ specSections.avatar }_${ command }`,
+    section: specSections.avatar,
+    command: command,
     signer,
-    cid: maybeImgCid,
+    cid: maybeCid,
     indexer,
     closed: false,
   });

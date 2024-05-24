@@ -1,4 +1,4 @@
-const commands = require("./commands");
+const { commands } = require("./commands");
 const specSections = {
   "avatar": "A",
   "delegation": "D",
