@@ -4,6 +4,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@osn/scan-common": "0.6.9",
+    "lodash.isempty": "^4.4.0",
     "mongodb": "6.1.0"
   }
 }

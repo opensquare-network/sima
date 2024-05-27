@@ -5,8 +5,9 @@ const {
 } = require("@osn/scan-common");
 const { handleBlock } = require("./scan/block");
 const { sima: { initSimaScanDb } } = require("@sima/mongo");
+const { doAvatarMediaTypePopulationJob } = require("./jobs/avatar/mediaType");
 
-(async () => {
+async function scanBlocks() {
   await initSimaScanDb();
   await subscribeFinalizedHeight();
   const blockHeights = [10625624];
@@ -26,6 +27,11 @@ const { sima: { initSimaScanDb } } = require("@sima/mongo");
     });
     console.log(`${ height } finished`);
   }
+}
+
+(async () => {
+  await doAvatarMediaTypePopulationJob();
+  // await scanBlocks();
 
   console.log("finished");
   process.exit(0);
