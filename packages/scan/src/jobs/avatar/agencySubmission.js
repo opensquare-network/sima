@@ -3,23 +3,23 @@ const { fetch: { fetchJson, fetchMime } } = require("../../utils/ipfs");
 const {
   sima: { getAvatarCol, markIpfsJobClosed }
 } = require("@sima/mongo");
+const { isAvatarJobDelay } = require("./common/checkAvatar");
 
 async function handleAgencySubmission(job) {
   const { cid, indexer, } = job;
   const json = await fetchJson(cid);
   if (!await isAgencySubmissionFormatValid(json)) {
-    return;
-  }
-
-  const avatarCol = await getAvatarCol();
-  const { address, entity: { CID: avatarCid } } = json;
-  const avatarInDb = await avatarCol.findOne({ address });
-  // this job handling maybe delayed after a new avatar setting, and we just ignore this job in this case.
-  if (avatarInDb && avatarInDb.indexer?.blockHeight > job.indexer?.blockHeight) {
     await markIpfsJobClosed(job);
     return;
   }
 
+  const { address, entity: { CID: avatarCid } } = json;
+  if (await isAvatarJobDelay(address, job)) {
+    await markIpfsJobClosed(job);
+    return;
+  }
+
+  const avatarCol = await getAvatarCol();
   const { type } = await fetchMime(avatarCid);
   await avatarCol.updateOne(
     { address },
