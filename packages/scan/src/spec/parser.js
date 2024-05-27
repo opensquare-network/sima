@@ -44,7 +44,7 @@ class SimaSpecParser {
       versionedCommands = delegationCommands;
     }
 
-    const versionedCommand = versionedCommands.find(item => item.version === version);
+    const versionedCommand = versionedCommands.find(item => item.version === parseInt(version));
     return (versionedCommand?.commands || []).includes(command);
   }
 
@@ -78,6 +78,7 @@ class SimaSpecParser {
     this.#section = section;
     this.#command = command;
     this.#args = items.slice(4);
+    this.#valid = true;
   }
 
   get isValid() {

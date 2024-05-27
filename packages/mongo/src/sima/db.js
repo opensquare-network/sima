@@ -17,6 +17,7 @@ async function initSimaScanDb() {
 
   avatarCol = await db.createCol("avatar");
   avatarUnsetRecordCol = await db.createCol("avatarUnsetRecord");
+  ipfsJobCol = await db.createCol("ipfsJob");
   _createIndexes().then(() => console.log("DB indexes created!"));
 }
 

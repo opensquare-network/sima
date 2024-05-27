@@ -5,7 +5,7 @@ const { handleSubmission } = require("./submission");
 
 async function handleAvatarCommand(signer, command, args = [], extrinsicIndexer) {
   if (command === commands.submission) {
-    await handleSubmission(signer, command, extrinsicIndexer);
+    await handleSubmission(signer, args, extrinsicIndexer);
   } else if (command === commands.agencySubmission) {
     await insertIpfsJob(signer, commands.agencySubmission, args, extrinsicIndexer);
   } else if (command === commands.unset) {

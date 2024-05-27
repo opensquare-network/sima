@@ -1,4 +1,4 @@
-const { fetch: { fetchJson, fetchMime } } = require("../../utils/ipfs");
+const { fetch: { fetchJson } } = require("../../utils/ipfs");
 const { avatar: { isAgencyUnsetFormatValid } } = require("../../spec");
 const {
   sima: { getAvatarCol, markIpfsJobClosed, getAvatarUnsetRecordCol, }

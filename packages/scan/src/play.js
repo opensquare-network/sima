@@ -4,10 +4,12 @@ const {
   chain: { getApi, setSpecHeights, subscribeFinalizedHeight },
 } = require("@osn/scan-common");
 const { handleBlock } = require("./scan/block");
+const { sima: { initSimaScanDb } } = require("@sima/mongo");
 
 (async () => {
+  await initSimaScanDb();
   await subscribeFinalizedHeight();
-  const blockHeights = [20890294];
+  const blockHeights = [10625624];
 
   const api = await getApi();
   for (const height of blockHeights) {
@@ -22,7 +24,7 @@ const { handleBlock } = require("./scan/block");
       block: block.block,
       events: allEvents,
     });
-    console.log(`${height} finished`);
+    console.log(`${ height } finished`);
   }
 
   console.log("finished");
