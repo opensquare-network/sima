@@ -28,12 +28,14 @@ async function onetimeJob() {
   const avatarRecords = await get10NullMediaTypeAvatar();
   const promises = avatarRecords.map(record => handleOneAvatarMediaJob(record));
   await Promise.all(promises);
+
+  return avatarRecords.length;
 }
 
 async function doAvatarMediaTypePopulationJob() {
   while (true) {
-    await onetimeJob();
-    await sleep(100);
+    const handledJobsLen = await onetimeJob();
+    await sleep(handledJobsLen <= 0 ? 10000 : 1000); // sleep 10 secs if previously no jobs
   }
 }
 
