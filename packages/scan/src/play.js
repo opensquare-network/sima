@@ -6,11 +6,11 @@ const {
 const { handleBlock } = require("./scan/block");
 const { sima: { initSimaScanDb } } = require("@sima/mongo");
 const { doAvatarMediaTypePopulationJob } = require("./jobs/avatar/mediaType");
+const { doAvatarNonBatchJobs } = require("./jobs/avatar/jobs");
 
 async function scanBlocks() {
-  await initSimaScanDb();
   await subscribeFinalizedHeight();
-  const blockHeights = [10625624];
+  const blockHeights = [10637722];
 
   const api = await getApi();
   for (const height of blockHeights) {
@@ -30,7 +30,9 @@ async function scanBlocks() {
 }
 
 (async () => {
-  await doAvatarMediaTypePopulationJob();
+  await initSimaScanDb();
+  await doAvatarNonBatchJobs();
+  // await doAvatarMediaTypePopulationJob();
   // await scanBlocks();
 
   console.log("finished");
