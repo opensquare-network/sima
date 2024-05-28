@@ -4,10 +4,13 @@ const {
   chain: { getApi, setSpecHeights, subscribeFinalizedHeight },
 } = require("@osn/scan-common");
 const { handleBlock } = require("./scan/block");
+const { sima: { initSimaScanDb } } = require("@sima/mongo");
+const { doAvatarMediaTypePopulationJob } = require("./jobs/avatar/mediaType");
+const { doAvatarNonBatchJobs } = require("./jobs/avatar/jobs");
 
-(async () => {
+async function scanBlocks() {
   await subscribeFinalizedHeight();
-  const blockHeights = [20890294];
+  const blockHeights = [10637722];
 
   const api = await getApi();
   for (const height of blockHeights) {
@@ -22,8 +25,15 @@ const { handleBlock } = require("./scan/block");
       block: block.block,
       events: allEvents,
     });
-    console.log(`${height} finished`);
+    console.log(`${ height } finished`);
   }
+}
+
+(async () => {
+  await initSimaScanDb();
+  await doAvatarNonBatchJobs();
+  // await doAvatarMediaTypePopulationJob();
+  // await scanBlocks();
 
   console.log("finished");
   process.exit(0);
