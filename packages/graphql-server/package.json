@@ -1,0 +1,13 @@
+{
+  "name": "@sima/graphql-server",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "@graphql-tools/schema": "^10.0.4",
+    "graphql": "^16.8.1",
+    "graphql-type-json": "^0.3.2",
+    "graphql-yoga": "^5.3.1",
+    "@sima/mongo": "1.0.0"
+  }
+}
