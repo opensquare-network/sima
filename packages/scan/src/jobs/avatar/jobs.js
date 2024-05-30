@@ -9,12 +9,7 @@ async function doAvatarJobs() {
 
 async function doAvatarNonBatchJobs() {
   const avatarNonBatchJobs = await get10AvatarNonBatchJobs();
-  const promises = [];
-  for (const job of avatarNonBatchJobs) {
-    const promise = handleOneAvatarJob(job);
-    promises.push(promise);
-  }
-
+  const promises = avatarNonBatchJobs.map(job => handleOneAvatarJob(job));
   await Promise.all(promises);
 }
 
