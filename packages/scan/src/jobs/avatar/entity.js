@@ -1,8 +1,9 @@
 const { fetch: { fetchJson } } = require("../../utils/ipfs");
 const { avatar: { isAgencySubmissionFormatValid, isAgencyUnsetFormatValid } } = require("../../spec");
 const {
-  sima: { getAvatarCol, markEntityJobClosed, getAvatarUnsetRecordCol }
+  sima: { getAvatarCol, markEntityJobClosed, getAvatarUnsetRecordCol, getEntityJobCol }
 } = require("@sima/mongo");
+const { utils: { sleep } } = require("@osn/scan-common");
 
 async function isAvatarSetDelay(address, timestamp) {
   const avatarCol = await getAvatarCol();
@@ -65,6 +66,21 @@ async function handleEntityByCidJob(job = {}) {
   }
 }
 
+async function getAvatarEntityJobs(limit = 10) {
+  const col = await getEntityJobCol();
+  return await col.find({ closed: false }).sort({ "indexer.blockHeight": 1 }).limit(limit).toArray();
+}
+
+async function doEntityJobs() {
+  while (true) {
+    const entityJobs = await getAvatarEntityJobs(10);
+    const promises = entityJobs.map(job => handleEntityByCidJob(job));
+    await Promise.all(promises);
+
+    await sleep(2 * 1000);
+  }
+}
+
 module.exports = {
-  handleEntityByCidJob,
+  doEntityJobs,
 }

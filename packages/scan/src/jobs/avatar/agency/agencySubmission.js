@@ -1,9 +1,9 @@
-const { avatar: { isAgencySubmissionFormatValid } } = require("../../spec");
-const { fetch: { fetchJson, fetchMime } } = require("../../utils/ipfs");
+const { avatar: { isAgencySubmissionFormatValid } } = require("../../../spec");
+const { fetch: { fetchJson, fetchMime } } = require("../../../utils/ipfs");
 const {
   sima: { getAvatarCol, markAgencyJobClosed }
 } = require("@sima/mongo");
-const { isAvatarJobDelay } = require("./common/checkAvatar");
+const { isAvatarJobDelay } = require("../common/checkAvatar");
 
 async function handleAgencySubmission(job) {
   const { cid, indexer, } = job;

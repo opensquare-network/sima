@@ -1,4 +1,4 @@
-const { fetch: { fetchJson }, isCid } = require("../../utils/ipfs");
+const { fetch: { fetchJson }, isCid } = require("../../../utils/ipfs");
 const {
   sima: { markAgencyJobClosed, insertEntityJob }
 } = require("@sima/mongo");

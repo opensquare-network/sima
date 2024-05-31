@@ -1,8 +1,8 @@
 const {
-  sima: { getAgencyJobCol, getEntityJobCol },
+  sima: { getAgencyJobCol },
 } = require("@sima/mongo");
-const { specSections } = require("../../spec/consts");
-const { commands } = require("../../spec/consts/commands");
+const { specSections } = require("../../../spec/consts");
+const { commands } = require("../../../spec/consts/commands");
 
 async function getAvatarNonBatchJobs(limit = 10) {
   const col = await getAgencyJobCol();
@@ -28,13 +28,7 @@ async function getAvatarBatchJobs(limit = 5) {
     .toArray();
 }
 
-async function getAvatarEntityJobs(limit = 10) {
-  const col = await getEntityJobCol();
-  return await col.find({ closed: false }).sort({ "indexer.blockHeight": 1 }).limit(limit).toArray();
-}
-
 module.exports = {
   getAvatarNonBatchJobs,
   getAvatarBatchJobs,
-  getAvatarEntityJobs,
-}
+};

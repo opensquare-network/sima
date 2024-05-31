@@ -1,9 +1,9 @@
-const { fetch: { fetchJson } } = require("../../utils/ipfs");
-const { avatar: { isAgencyUnsetFormatValid } } = require("../../spec");
+const { fetch: { fetchJson } } = require("../../../utils/ipfs");
+const { avatar: { isAgencyUnsetFormatValid } } = require("../../../spec");
 const {
   sima: { getAvatarCol, markAgencyJobClosed, getAvatarUnsetRecordCol, }
 } = require("@sima/mongo");
-const { isAvatarJobDelay } = require("./common/checkAvatar");
+const { isAvatarJobDelay } = require("../common/checkAvatar");
 
 async function handleAgencyUnset({ job }) {
   const { cid, indexer, } = job;
