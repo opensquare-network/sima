@@ -12,6 +12,7 @@ async function handleSubmission(signer, args, indexer) {
     address: signer,
     cid: maybeImgCid,
     mediaType: null,
+    timestamp: indexer.blockTime,
     indexer,
   });
 }

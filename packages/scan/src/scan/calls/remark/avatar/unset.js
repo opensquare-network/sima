@@ -12,6 +12,7 @@ async function handleAvatarUnset(signer, indexer) {
   const unsetCol = await getAvatarUnsetRecordCol();
   await unsetCol.insertOne({
     address: signer,
+    timestamp: indexer.blockTime,
     indexer,
   });
 }

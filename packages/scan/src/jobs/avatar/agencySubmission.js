@@ -20,12 +20,14 @@ async function handleAgencySubmission(job) {
   }
 
   const avatarCol = await getAvatarCol();
-  const { type } = await fetchMime(avatarCid);
-  await avatarCol.updateOne(
-    { address },
-    { $set: { cid: avatarCid, mediaType: type, indexer } },
-    { upsert: true },
-  );
+  await avatarCol.updateOne({ address }, {
+    $set: {
+      cid: avatarCid,
+      mediaType: null,
+      timestamp: indexer.blockTime,
+      indexer,
+    }
+  }, { upsert: true },);
   await markAgencyJobClosed(job);
 }
 

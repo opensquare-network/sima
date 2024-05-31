@@ -1,7 +1,7 @@
 const { getEntityJobCol } = require("./db");
 
 async function insertEntityJob(job) {
-  const col = await getEntityJobCol(job);
+  const col = await getEntityJobCol();
   const { cid, indexer } = job;
   const maybeInDb = await col.findOne({ cid });
   if (maybeInDb) {
@@ -15,6 +15,12 @@ async function insertEntityJob(job) {
   });
 }
 
+async function markEntityJobClosed(cid) {
+  const col = await getEntityJobCol();
+  await col.updateOne({ cid }, { $set: { closed: true } });
+}
+
 module.exports = {
   insertEntityJob,
+  markEntityJobClosed,
 }
