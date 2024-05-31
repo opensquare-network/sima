@@ -13,8 +13,8 @@ async function handleAgencyUnset({ job }) {
     return;
   }
 
-  const { address } = json;
-  if (await isAvatarJobDelay(address, job)) {
+  const { address, entity: { timestamp } } = json;
+  if (await isAvatarJobDelay(address, timestamp)) {
     await markAgencyJobClosed(job);
     return;
   }

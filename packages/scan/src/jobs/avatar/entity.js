@@ -4,26 +4,11 @@ const {
   sima: { getAvatarCol, markEntityJobClosed, getAvatarUnsetRecordCol, getEntityJobCol }
 } = require("@sima/mongo");
 const { utils: { sleep } } = require("@osn/scan-common");
-
-async function isAvatarSetDelay(address, timestamp) {
-  const avatarCol = await getAvatarCol();
-  const avatarInDb = await avatarCol.findOne({ address });
-  if (avatarInDb && avatarInDb.timestamp > timestamp) {
-    return true;
-  }
-
-  const unsetCol = await getAvatarUnsetRecordCol();
-  const items = await unsetCol.find({ address }).sort({ "indexer.blockHeight": -1 }).limit(1).toArray();
-  if (items.length <= 0) {
-    return false;
-  }
-  const latestUnsetRecord = items[0];
-  return latestUnsetRecord.timestamp > timestamp;
-}
+const { isAvatarJobDelay } = require("./common/checkAvatar");
 
 async function handleAgencySubmissionByEntity(jobCid, json = {}, indexer) {
   const { entity: { CID, timestamp }, address } = json;
-  if (await isAvatarSetDelay(address, timestamp)) {
+  if (await isAvatarJobDelay(address, timestamp)) {
     await markEntityJobClosed(jobCid);
     return;
   }

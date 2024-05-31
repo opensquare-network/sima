@@ -13,8 +13,8 @@ async function handleAgencySubmission(job) {
     return;
   }
 
-  const { address, entity: { CID: avatarCid } } = json;
-  if (await isAvatarJobDelay(address, job)) {
+  const { address, entity: { CID: avatarCid, timestamp } } = json;
+  if (await isAvatarJobDelay(address, timestamp)) {
     await markAgencyJobClosed(job);
     return;
   }
