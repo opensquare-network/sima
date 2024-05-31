@@ -1,7 +1,7 @@
 const { fetch: { fetchJson } } = require("../../utils/ipfs");
 const { avatar: { isAgencyUnsetFormatValid } } = require("../../spec");
 const {
-  sima: { getAvatarCol, markIpfsJobClosed, getAvatarUnsetRecordCol, }
+  sima: { getAvatarCol, markAgencyJobClosed, getAvatarUnsetRecordCol, }
 } = require("@sima/mongo");
 const { isAvatarJobDelay } = require("./common/checkAvatar");
 
@@ -9,13 +9,13 @@ async function handleAgencyUnset({ job }) {
   const { cid, indexer, } = job;
   const json = await fetchJson(cid);
   if (!await isAgencyUnsetFormatValid(json)) {
-    await markIpfsJobClosed(job);
+    await markAgencyJobClosed(job);
     return;
   }
 
   const { address } = json;
   if (await isAvatarJobDelay(address, job)) {
-    await markIpfsJobClosed(job);
+    await markAgencyJobClosed(job);
     return;
   }
 
@@ -24,6 +24,7 @@ async function handleAgencyUnset({ job }) {
 
   const unsetCol = await getAvatarUnsetRecordCol();
   await unsetCol.insertOne({ address, indexer });
+  await markAgencyJobClosed(job);
 }
 
 module.exports = {

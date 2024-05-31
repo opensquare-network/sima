@@ -1,7 +1,7 @@
 const { avatar: { isAgencySubmissionFormatValid } } = require("../../spec");
 const { fetch: { fetchJson, fetchMime } } = require("../../utils/ipfs");
 const {
-  sima: { getAvatarCol, markIpfsJobClosed }
+  sima: { getAvatarCol, markAgencyJobClosed }
 } = require("@sima/mongo");
 const { isAvatarJobDelay } = require("./common/checkAvatar");
 
@@ -9,13 +9,13 @@ async function handleAgencySubmission(job) {
   const { cid, indexer, } = job;
   const json = await fetchJson(cid);
   if (!await isAgencySubmissionFormatValid(json)) {
-    await markIpfsJobClosed(job);
+    await markAgencyJobClosed(job);
     return;
   }
 
   const { address, entity: { CID: avatarCid } } = json;
   if (await isAvatarJobDelay(address, job)) {
-    await markIpfsJobClosed(job);
+    await markAgencyJobClosed(job);
     return;
   }
 
@@ -26,7 +26,7 @@ async function handleAgencySubmission(job) {
     { $set: { cid: avatarCid, mediaType: type, indexer } },
     { upsert: true },
   );
-  await markIpfsJobClosed(job);
+  await markAgencyJobClosed(job);
 }
 
 module.exports = {

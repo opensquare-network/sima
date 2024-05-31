@@ -1,14 +1,14 @@
 const { isCid } = require("../../../../utils/ipfs/isCid");
-const { sima: { getIpfsJobCol } } = require("@sima/mongo");
+const { sima: { getAgencyJobCol } } = require("@sima/mongo");
 const { specSections, commands } = require("../../../../spec/consts");
 
-async function insertIpfsJob(signer, command, args, indexer) {
+async function insertAgencyJob(signer, command, args, indexer) {
   const maybeCid = args[0];
   if (!await isCid(maybeCid)) {
     return
   }
 
-  const col = await getIpfsJobCol();
+  const col = await getAgencyJobCol();
   await col.insertOne({
     section: specSections.avatar,
     command: command,
@@ -20,5 +20,5 @@ async function insertIpfsJob(signer, command, args, indexer) {
 }
 
 module.exports = {
-  insertIpfsJob,
+  insertAgencyJob,
 }

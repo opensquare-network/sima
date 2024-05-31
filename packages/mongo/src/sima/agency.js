@@ -1,7 +1,7 @@
-const { getIpfsJobCol } = require("./db");
+const { getAgencyJobCol } = require("./db");
 
-async function markIpfsJobClosed(job) {
-  const jobCol = await getIpfsJobCol(job);
+async function markAgencyJobClosed(job) {
+  const jobCol = await getAgencyJobCol(job);
   const { section, command, signer, indexer: { blockHeight, extrinsicIndex } } = job;
   await jobCol.updateOne({
     section, command, signer, "indexer.blockHeight": blockHeight, "indexer.extrinsicIndex": extrinsicIndex,
@@ -9,5 +9,5 @@ async function markIpfsJobClosed(job) {
 }
 
 module.exports = {
-  markIpfsJobClosed,
+  markAgencyJobClosed,
 }

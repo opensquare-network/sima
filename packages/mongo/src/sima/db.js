@@ -6,7 +6,8 @@ const {
 let db = null;
 let avatarCol = null;
 let avatarUnsetRecordCol = null;
-let ipfsJobCol = null;
+let agencyJobCol = null;
+let entityJobCol = null;
 
 async function initSimaScanDb() {
   db = new ScanDb(
@@ -17,7 +18,8 @@ async function initSimaScanDb() {
 
   avatarCol = await db.createCol("avatar");
   avatarUnsetRecordCol = await db.createCol("avatarUnsetRecord");
-  ipfsJobCol = await db.createCol("ipfsJob");
+  agencyJobCol = await db.createCol("ipfsJob");
+  entityJobCol = await db.createCol("entityJob");
   _createIndexes().then(() => console.log("DB indexes created!"));
 }
 
@@ -27,13 +29,15 @@ async function _createIndexes() {
     process.exit(1);
   }
 
-  await ipfsJobCol.createIndex({ closed: 1 });
-  await ipfsJobCol.createIndex({ section: 1, command: 1 });
+  await agencyJobCol.createIndex({ closed: 1 });
+  await agencyJobCol.createIndex({ section: 1, command: 1 });
 
   await avatarCol.createIndex({ address: 1 }, { unique: true });
   await avatarUnsetRecordCol.createIndex({ signer: 1 });
   await avatarUnsetRecordCol.createIndex({ signer: 1, "indexer.blockHeight": -1 });
-  // todo: add indexes
+
+  await entityJobCol.createIndex({ cid: 1 });
+  await entityJobCol.createIndex({ closed: 1 });
 }
 
 async function makeSureInit(col) {
@@ -55,9 +59,9 @@ async function getAvatarCol() {
   return avatarCol;
 }
 
-async function getIpfsJobCol() {
-  await makeSureInit(ipfsJobCol);
-  return ipfsJobCol;
+async function getAgencyJobCol() {
+  await makeSureInit(agencyJobCol);
+  return agencyJobCol;
 }
 
 async function getAvatarUnsetRecordCol() {
@@ -65,10 +69,16 @@ async function getAvatarUnsetRecordCol() {
   return avatarUnsetRecordCol;
 }
 
+async function getEntityJobCol() {
+  await makeSureInit(entityJobCol);
+  return entityJobCol;
+}
+
 module.exports = {
   initSimaScanDb,
   getSimaDb,
   getAvatarCol,
-  getIpfsJobCol,
+  getAgencyJobCol,
   getAvatarUnsetRecordCol,
+  getEntityJobCol,
 }
