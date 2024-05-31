@@ -1,10 +1,11 @@
-const { doAvatarJobs } = require("./avatar/jobs");
+const { doEntityJobs } = require("./avatar/entity");
+const { doAgencyJobs } = require("./avatar/agency");
+const { doAvatarMediaTypePopulationJob } = require("./avatar/mediaType");
 
 async function doJobs() {
-  doAvatarJobs().then(() => console.log(`Avatar jobs finished`));
-  // todo: 1. fetch jobs from database collection.
-  // todo: 2. fetch img by CID and check media type. There should be IPFS fetching jobs here.
-  // todo: 3. do operations
+  doAgencyJobs().then(() => console.log(`Avatar agency jobs done`));
+  doEntityJobs().then(() => console.log(`Avatar entity jobs done`));
+  doAvatarMediaTypePopulationJob().then(() => console.log(`Avatar media types done`));
 }
 
 module.exports = {
